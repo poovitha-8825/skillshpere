@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SkillSphere AI — Project Navigator</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#0A0A12;--deep:#0F0F1E;--panel:#141428;
+  --card:#1A1A32;--border:#252545;--muted:#4A4A72;
+  --text:#C8C8E8;--bright:#E8E8FF;
+  --accent:#7C5CFC;--a2:#00E5C3;--warn:#FF6B6B;--gold:#FFD166;
+  --glow:rgba(124,92,252,0.22);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--text);
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:40px 24px;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 50% 20%,rgba(124,92,252,.12) 0%,transparent 65%),
+    linear-gradient(rgba(37,37,69,.2) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(37,37,69,.2) 1px,transparent 1px);
+  background-size:100% 100%,44px 44px,44px 44px;
+}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;
+  font-weight:800;font-size:1.6rem;color:var(--bright);margin-bottom:8px}
+.logo span{color:var(--accent)}
+.logo-dot{width:10px;height:10px;border-radius:50%;background:var(--a2);
+  box-shadow:0 0 12px var(--a2);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.tagline{font-size:.95rem;color:var(--muted);margin-bottom:48px;text-align:center}
+.tagline strong{color:var(--text)}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:860px}
+.page-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:28px 24px;
+  text-decoration:none;
+  transition:all .25s;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;gap:0;
+}
+.page-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(124,92,252,.05),transparent);pointer-events:none}
+.page-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.page-card:hover{transform:translateY(-4px);border-color:var(--accent);
+  box-shadow:0 12px 40px rgba(124,92,252,.14)}
+.page-card:hover::after{transform:scaleX(1)}
+
+.c1::after{background:linear-gradient(90deg,var(--accent),var(--a2))}
+.c2::after{background:linear-gradient(90deg,var(--a2),#66F0DD)}
+.c3::after{background:linear-gradient(90deg,var(--accent),#A07CFF)}
+.c4::after{background:linear-gradient(90deg,var(--gold),#FFA943)}
+.c5::after{background:linear-gradient(90deg,var(--a2),var(--accent))}
+
+.card-icon{font-size:2.2rem;margin-bottom:16px;display:block}
+.card-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;
+  color:var(--muted);margin-bottom:6px;letter-spacing:.1em}
+.card-title{font-family:'Syne',sans-serif;font-weight:800;
+  font-size:1.1rem;color:var(--bright);margin-bottom:6px}
+.card-desc{font-size:.78rem;color:var(--muted);line-height:1.55;margin-bottom:16px;flex:1}
+.card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.ctag{font-family:'JetBrains Mono',monospace;font-size:.62rem;
+  padding:2px 8px;border-radius:100px;background:var(--panel);
+  border:1px solid var(--border);color:var(--muted)}
+.card-arrow{display:flex;align-items:center;justify-content:space-between;
+  font-size:.78rem;font-weight:600;color:var(--accent)}
+
+.flow-section{margin-top:40px;text-align:center;width:100%;max-width:860px}
+.flow-title{font-family:'Syne',sans-serif;font-weight:800;
+  font-size:1rem;color:var(--bright);margin-bottom:20px}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.flow-node{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:10px 16px;
+  font-size:.78rem;font-weight:600;color:var(--text);
+  text-decoration:none;transition:all .2s;white-space:nowrap;
+}
+.flow-node:hover{border-color:var(--accent);color:var(--bright)}
+.flow-arrow{color:var(--muted);font-size:1rem;padding:0 6px}
+
+.footer-note{margin-top:40px;text-align:center;font-size:.72rem;color:var(--muted);
+  font-family:'JetBrains Mono',monospace}
+.footer-note a{color:var(--accent);text-decoration:none}
+
+@media(max-width:680px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="logo"><span class="logo-dot"></span>Skill<span>Sphere</span> AI</div>
+<p class="tagline">Full-stack AI Career Platform · <strong>5 pages</strong> · All interconnected</p>
+
+<div class="grid">
+
+  <a href="skillsphere.html" class="page-card c1">
+    <span class="card-icon">🏠</span>
+    <div class="card-num">PAGE 01</div>
+    <div class="card-title">Landing Page</div>
+    <div class="card-desc">Hero section, features grid, assessment preview, leaderboard, certificate showcase, and pricing plans.</div>
+    <div class="card-tags">
+      <span class="ctag">Hero</span><span class="ctag">Features</span>
+      <span class="ctag">Pricing</span><span class="ctag">Leaderboard</span>
+    </div>
+    <div class="card-arrow">Open Page <span>→</span></div>
+  </a>
+
+  <a href="skillsphere-auth.html" class="page-card c2">
+    <span class="card-icon">🔐</span>
+    <div class="card-num">PAGE 02</div>
+    <div class="card-title">Login / Register</div>
+    <div class="card-desc">Split-screen auth with Google/GitHub OAuth, 3-step registration, password strength meter, and domain picker.</div>
+    <div class="card-tags">
+      <span class="ctag">Sign In</span><span class="ctag">Register</span>
+      <span class="ctag">OAuth</span><span class="ctag">3-Step Flow</span>
+    </div>
+    <div class="card-arrow">Open Page <span>→</span></div>
+  </a>
+
+  <a href="skillsphere-admin.html" class="page-card c3">
+    <span class="card-icon">⚙️</span>
+    <div class="card-num">PAGE 03</div>
+    <div class="card-title">Admin Panel</div>
+    <div class="card-desc">Full dashboard with sidebar nav, student management, question bank, certificate registry, leaderboard, reports & settings.</div>
+    <div class="card-tags">
+      <span class="ctag">Dashboard</span><span class="ctag">Students</span>
+      <span class="ctag">Questions</span><span class="ctag">Reports</span>
+    </div>
+    <div class="card-arrow">Open Page <span>→</span></div>
+  </a>
+
+  <a href="skillsphere-assessment.html" class="page-card c4">
+    <span class="card-icon">🧠</span>
+    <div class="card-num">PAGE 04</div>
+    <div class="card-title">AI Assessment</div>
+    <div class="card-desc">Claude API powered question generation, live timer, skill tracking, adaptive questions, results with career matches & roadmap.</div>
+    <div class="card-tags">
+      <span class="ctag">Claude AI</span><span class="ctag">Live Timer</span>
+      <span class="ctag">Results</span><span class="ctag">Demo Mode</span>
+    </div>
+    <div class="card-arrow">Open Page <span>→</span></div>
+  </a>
+
+  <a href="skillsphere-profile.html" class="page-card c5">
+    <span class="card-icon">👤</span>
+    <div class="card-num">PAGE 05</div>
+    <div class="card-title">User Profile</div>
+    <div class="card-desc">Skill score overview, assessment history, certificate grid, career matches, resume AI analyzer, streak tracker & settings.</div>
+    <div class="card-tags">
+      <span class="ctag">Scores</span><span class="ctag">Certificates</span>
+      <span class="ctag">Resume AI</span><span class="ctag">Streak</span>
+    </div>
+    <div class="card-arrow">Open Page <span>→</span></div>
+  </a>
+
+  <!-- Start here card -->
+  <a href="skillsphere-auth.html" class="page-card" style="border-style:dashed;border-color:var(--accent);
+    background:rgba(124,92,252,.04);justify-content:center;align-items:center;text-align:center;min-height:200px">
+    <span style="font-size:2rem;margin-bottom:10px;display:block">🚀</span>
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--bright);margin-bottom:6px">
+      Start Here
+    </div>
+    <div style="font-size:.78rem;color:var(--muted);line-height:1.5">
+      Begin the full user journey from Login → Assessment → Results → Profile
+    </div>
+  </a>
+
+</div>
+
+<div class="flow-section">
+  <div class="flow-title">Navigation Flow</div>
+  <div class="flow-row">
+    <a href="skillsphere.html" class="flow-node">🏠 Home</a>
+    <span class="flow-arrow">→</span>
+    <a href="skillsphere-auth.html" class="flow-node">🔐 Login</a>
+    <span class="flow-arrow">→</span>
+    <a href="skillsphere-assessment.html" class="flow-node">🧠 Assessment</a>
+    <span class="flow-arrow">→</span>
+    <a href="skillsphere-profile.html" class="flow-node">👤 Profile</a>
+    <span class="flow-arrow">↔</span>
+    <a href="skillsphere-admin.html" class="flow-node">⚙️ Admin</a>
+  </div>
+</div>
+
+<div class="footer-note">
+  SkillSphere AI · Built with HTML, CSS, JS + Claude API ·
+  <a href="skillsphere-assessment.html">Try Demo Mode →</a>
+</div>
+
+</body>
+</html>
