@@ -834,6 +834,94 @@
 </div>
 
 <script>
+// Login function update பண்ணுங்க
+async function handleLogin() {
+  const email    = document.getElementById('login-email').value;
+  const password = document.getElementById('login-pw').value;
+
+  if (!email || !password) {
+    showToast('error', 'Missing fields', 'Enter email and password');
+    return;
+  }
+
+  const btn = document.getElementById('login-btn');
+  btn.classList.add('loading');
+
+  try {
+    const response = await fetch('http://localhost:8080/api/v1/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // Token save பண்ணுங்க
+      localStorage.setItem('token',     data.data.accessToken);
+      localStorage.setItem('user',      JSON.stringify(data.data.user));
+      localStorage.setItem('userEmail', email);
+
+      showToast('success', 'Login successful', 'Redirecting...');
+      setTimeout(() => {
+        window.location.href = 'skillsphere-assessment.html';
+      }, 1000);
+    } else {
+      showToast('error', 'Login failed', data.message);
+    }
+  } catch (err) {
+    showToast('error', 'Server error', 'Backend running-ஆ check பண்ணுங்க');
+  } finally {
+    btn.classList.remove('loading');
+  }
+}
+
+// Register function update பண்ணுங்க
+async function handleRegister() {
+  const fname  = document.getElementById('reg-fname').value;
+  const lname  = document.getElementById('reg-lname').value;
+  const email  = document.getElementById('reg-email').value;
+  const pw     = document.getElementById('reg-pw').value;
+  const college= document.getElementById('reg-college').value;
+  const year   = document.getElementById('e-year')?.value || '3rd Year';
+  const domain = document.querySelector('.d-card.selected')?.dataset.domain || 'CS';
+
+  const btn = document.getElementById('reg-btn');
+  btn.classList.add('loading');
+
+  try {
+    const response = await fetch('http://localhost:8080/api/v1/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstName  : fname,
+        lastName   : lname,
+        email      : email,
+        password   : pw,
+        college    : college,
+        domain     : domain,
+        yearOfStudy: year
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      localStorage.setItem('token', data.data.accessToken);
+      localStorage.setItem('user',  JSON.stringify(data.data.user));
+      showToast('success', 'Account created!', 'Welcome to SkillSphere');
+      setTimeout(() => {
+        window.location.href = 'skillsphere-assessment.html';
+      }, 1200);
+    } else {
+      showToast('error', 'Registration failed', data.message);
+    }
+  } catch (err) {
+    showToast('error', 'Server error', 'Backend running-ஆ check பண்ணுங்க');
+  } finally {
+    btn.classList.remove('loading');
+  }
+}
   /* ── TABS ── */
   function switchTab(tab) {
     const isLogin = tab === 'login';
@@ -915,44 +1003,7 @@
   /* ── SOCIAL LOGIN ── */
   function socialLogin(provider) {
     showToast('info', `Connecting to ${provider}…`, `Redirecting to ${provider} OAuth`);
-  }
-
-  /* ── LOGIN HANDLER ── */
-  function handleLogin() {
-    const email = document.getElementById('login-email').value.trim();
-    const pw = document.getElementById('login-pw').value;
-    if (!email || !pw) {
-      showToast('error', 'Missing fields', 'Please enter your email and password.');
-      return;
-    }
-    const btn = document.getElementById('login-btn');
-    btn.classList.add('loading');
-    setTimeout(() => {
-      btn.classList.remove('loading');
-      showToast('success', 'Signed in!', 'Redirecting to your dashboard…');
-      setTimeout(() => {
-        window.location.href = 'skillsphere.html';
-      }, 1400);
-    }, 1800);
-  }
-
-  /* ── REGISTER HANDLER ── */
-  function handleRegister() {
-    const fname = document.getElementById('reg-fname').value.trim();
-    const btn = document.getElementById('reg-btn');
-    btn.classList.add('loading');
-    setTimeout(() => {
-      btn.classList.remove('loading');
-      document.getElementById('reg-step-3').classList.remove('active');
-      const success = document.getElementById('reg-success');
-      success.classList.add('visible');
-      success.querySelector('.success-title').innerHTML =
-        `You're in, ${fname || 'there'}!<br/>Welcome to SkillSphere.`;
-      document.getElementById('step-indicator').style.display = 'none';
-      showToast('success', 'Account created!', 'Your AI assessment is being prepared.');
-    }, 2000);
-  }
-
+  } 
   /* ── FORGOT PASSWORD ── */
   function showForgot(e) {
     e.preventDefault();
