@@ -1131,6 +1131,27 @@ renderStreak();
 renderHistory();
 renderCerts();
 renderCareers();
+  // Page load ஆனதும் profile fetch பண்ணுங்க
+window.addEventListener('load', async () => {
+  if (!checkAuth()) return;
+
+  const data = await getMyProfileApi();
+  if (data && data.success) {
+    const u = data.data;
+    document.getElementById('p-name').textContent =
+      u.firstName + ' ' + u.lastName;
+    document.getElementById('p-handle').textContent =
+      '@' + u.firstName.toLowerCase() + '.' + u.lastName.toLowerCase();
+    document.getElementById('p-bio').textContent =
+      u.bio || 'Add your bio...';
+    document.getElementById('p-college').textContent =
+      '🏛 ' + (u.college || 'College');
+    document.getElementById('p-domain').textContent =
+      '💻 ' + (u.domain || 'Domain');
+    document.getElementById('p-location').textContent =
+      u.location || 'Location';
+  }
+});
 </script>
   <script src="api-helper.js"></script>
 </body>
